@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h2>অ্যাডমিন প্যানেল</h2>
+  <form method="post" action="{{ url_for('admin_logout') }}">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <button class="btn red">লগআউট</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3>নতুন ফাইল আপলোড</h3>
+  <form method="post" action="{{ url_for('admin_upload') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label>টাইটেল *</label>
+    <input name="title" required>
+    <label>ডিটেইলস / লেখা</label>
+    <textarea name="description" rows="5"></textarea>
+    <label>Telegram Bot Token</label>
+    <input name="bot_token" placeholder="123456:ABC-DEF...">
+    <label>Telegram Chat ID</label>
+    <input name="chat_id" placeholder="-100123456789 অথবা @channelname">
+    <label>ফাইল / APK *</label>
+    <input type="file" name="file" required>
+    <button class="btn" type="submit">আপলোড</button>
+  </form>
+</div>
+
+<div class="card" style="overflow-x:auto">
+  <h3>আপলোড করা ফাইল ({{ files|length }})</h3>
+  <table>
+    <tr><th>টাইটেল</th><th>সাইজ</th><th>ডাউনলোড</th><th></th></tr>
+    {% for f in files %}
+    <tr>
+      <td><a href="{{ url_for('view_file', file_id=f.id) }}">{{ f.title }}</a></td>
+      <td>{{ f.file_size|filesize }}</td>
+      <td>{{ f.downloads }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_delete', file_id=f.id) }}"
+              onsubmit="return confirm('মুছে ফেলবেন?')">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          <button class="btn red">ডিলিট</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
