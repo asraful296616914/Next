@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>সকল ফাইল</h2>
+{% for f in files %}
+  <div class="card">
+    <a class="title" href="{{ url_for('view_file', file_id=f.id) }}">{{ f.title }}</a>
+    {% if f.description %}
+      <div class="meta">{{ f.description[:120] }}{% if f.description|length > 120 %}...{% endif %}</div>
+    {% endif %}
+    <div class="meta">{{ f.file_size|filesize }} • {{ f.downloads }} ডাউনলোড • {{ f.created_at }}</div>
+  </div>
+{% else %}
+  <p>এখনো কোনো ফাইল আপলোড করা হয়নি।</p>
+{% endfor %}
+{% endblock %}
