@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ f.title }}{% endblock %}
+{% block content %}
+<div class="card">
+  <h2>{{ f.title }}</h2>
+  <div class="meta">{{ f.original_name }} • {{ f.file_size|filesize }} • {{ f.downloads }} ডাউনলোড</div>
+  <hr>
+  <h3>বিস্তারিত</h3>
+  <pre>{{ f.description or "কোনো বিবরণ নেই।" }}</pre>
+
+  {% if f.telegram_chat_id %}
+    <h3>Telegram</h3>
+    <p>
+      Chat ID: <b>{{ f.telegram_chat_id }}</b>
+      {% if f.telegram_chat_id.startswith('@') %}
+        — <a href="https://t.me/{{ f.telegram_chat_id[1:] }}" target="_blank" rel="noopener">Telegram-এ খুলুন</a>
+      {% endif %}
+    </p>
+  {% endif %}
+
+  <a class="btn" href="{{ url_for('download', file_id=f.id) }}">⬇ ডাউনলোড</a>
+  <a class="btn" style="background:#6b7280" href="{{ url_for('index') }}">← ফিরে যান</a>
+</div>
+{% endblock %}
