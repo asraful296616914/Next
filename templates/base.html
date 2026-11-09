@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}File Hub{% endblock %}</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,sans-serif;background:#f4f6f8;color:#222}
+    header{background:#1f2937;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+    header a{color:#fff;text-decoration:none;font-weight:600}
+    main{max-width:900px;margin:20px auto;padding:0 16px}
+    .card{background:#fff;border-radius:10px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    .card a.title{font-size:18px;font-weight:600;color:#2563eb;text-decoration:none}
+    .meta{color:#666;font-size:13px;margin-top:6px}
+    .btn{display:inline-block;background:#2563eb;color:#fff;border:0;padding:10px 18px;border-radius:8px;cursor:pointer;text-decoration:none;font-size:15px}
+    .btn.red{background:#dc2626;padding:6px 12px;font-size:13px}
+    input,textarea{width:100%;padding:10px;margin:6px 0 14px;border:1px solid #ccc;border-radius:8px;font:inherit}
+    label{font-weight:600;font-size:14px}
+    .flash{background:#fef3c7;padding:10px 14px;border-radius:8px;margin-bottom:14px}
+    pre{white-space:pre-wrap;word-wrap:break-word;font-family:inherit}
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <a href="{{ url_for('index') }}">📁 File Hub</a>
+    <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+  </header>
+  <main>
+    {% with msgs = get_flashed_messages() %}
+      {% for m in msgs %}<div class="flash">{{ m }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
