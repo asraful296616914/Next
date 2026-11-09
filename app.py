@@ -126,7 +126,7 @@ def admin_login():
                 and hmac.compare_digest(p, ADMIN_PASSWORD)):
             session["admin"] = True
             return redirect(url_for("admin_dashboard"))
-        flash("ইউজারনেম বা পাসওয়ার্ড ভুল!")
+        flash("Wrong username or password!")
     return render_template("admin/login.html")
 
 
@@ -149,7 +149,7 @@ def admin_upload():
     file = request.files.get("file")
     title = request.form.get("title", "").strip()
     if not file or not file.filename or not title:
-        flash("টাইটেল এবং ফাইল দেওয়া বাধ্যতামূলক।")
+        flash("Title and file are required.")
         return redirect(url_for("admin_dashboard"))
 
     ext = os.path.splitext(file.filename)[1].lower()
@@ -165,7 +165,7 @@ def admin_upload():
          os.path.getsize(path), request.form.get("bot_token", "").strip(),
          request.form.get("chat_id", "").strip()))
     db.commit()
-    flash("ফাইল সফলভাবে আপলোড হয়েছে।")
+    flash("File uploaded successfully.")
     return redirect(url_for("admin_dashboard"))
 
 
@@ -181,7 +181,7 @@ def admin_delete(file_id):
             pass
         db.execute("DELETE FROM files WHERE id = ?", (file_id,))
         db.commit()
-        flash("ফাইল মুছে ফেলা হয়েছে।")
+        flash("File deleted.")
     return redirect(url_for("admin_dashboard"))
 
 
