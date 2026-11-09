@@ -3,22 +3,29 @@
 {% block content %}
 <div class="card">
   <h2>{{ f.title }}</h2>
-  <div class="meta">{{ f.original_name }} • {{ f.file_size|filesize }} • {{ f.downloads }} ডাউনলোড</div>
+  <div class="meta">{{ f.original_name }} • {{ f.file_size|filesize }} • {{ f.downloads }} downloads</div>
   <hr>
-  <h3>বিস্তারিত</h3>
-  <pre>{{ f.description or "কোনো বিবরণ নেই।" }}</pre>
+  <h3>Details</h3>
+  <pre>{{ f.description or "No description." }}</pre>
 
-  {% if f.telegram_chat_id %}
+  {% if f.telegram_chat_id or (f.telegram_bot_token and session.get('admin')) %}
     <h3>Telegram</h3>
+    {% if f.telegram_chat_id %}
     <p>
       Chat ID: <b>{{ f.telegram_chat_id }}</b>
       {% if f.telegram_chat_id.startswith('@') %}
-        — <a href="https://t.me/{{ f.telegram_chat_id[1:] }}" target="_blank" rel="noopener">Telegram-এ খুলুন</a>
+        — <a href="https://t.me/{{ f.telegram_chat_id[1:] }}" target="_blank" rel="noopener">Open in Telegram</a>
       {% endif %}
     </p>
+    {% endif %}
+    {% if f.telegram_bot_token and session.get('admin') %}
+    <p>
+      Bot Token (only you can see this): <b style="word-break:break-all">{{ f.telegram_bot_token }}</b>
+    </p>
+    {% endif %}
   {% endif %}
 
-  <a class="btn" href="{{ url_for('download', file_id=f.id) }}">⬇ ডাউনলোড</a>
-  <a class="btn" style="background:#6b7280" href="{{ url_for('index') }}">← ফিরে যান</a>
+  <a class="btn" href="{{ url_for('download', file_id=f.id) }}">⬇ Download</a>
+  <a class="btn" style="background:#6b7280" href="{{ url_for('index') }}">← Back</a>
 </div>
 {% endblock %}
