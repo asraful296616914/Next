@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<div class="card" style="max-width:380px;margin:40px auto">
+  <h2>অ্যাডমিন লগইন</h2>
+  <form method="post">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label>ইউজারনেম</label>
+    <input name="username" required>
+    <label>পাসওয়ার্ড</label>
+    <input type="password" name="password" required>
+    <button class="btn" type="submit">লগইন</button>
+  </form>
+</div>
+{% endblock %}
